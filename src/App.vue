@@ -48,7 +48,7 @@
         </div>
       </div>
     </div>
-    <Authorize @confirm="current = $event" />
+    <Authorize @confirm="current = $event"/>
   </div>
 </template>
 
@@ -58,7 +58,7 @@
   import SkillForm from "./components/SkillForm";
   import {defaultValue} from "./utils/constants";
   import Authorize from "./components/Authorize";
-
+  import axios from 'axios'
 
   export default {
     name: 'App',
@@ -70,18 +70,20 @@
     data() {
       return {
         imgList,
-        current: 'dw',
+        current: '',
         currentTime: '',
         chartData: defaultValue,
+        version: -1,
       }
     },
     mounted() {
-      setInterval(() => {
-        const date = new Date();
-        const [h, m, s] = [date.getHours(), date.getMinutes(), date.getSeconds()]
-
-        this.currentTime = `${h}:${m}:${s}`;
-      }, 1000)
+      this.initTimeIndicator();
+      this.setUpDataTimer();
+    },
+    destroyed() {
+      clearInterval(this.timeIndicator);
+      clearInterval(this.dataTimer);
+      clearInterval(this.dataTimerGet);
     },
     methods: {
       selectUser(item) {
@@ -90,7 +92,61 @@
       },
       handleFormChange(values) {
         this.chartData = values;
+      },
+      setUpDataTimer() {
+        this.dataTimer = setInterval(() => {
+          this.current && this.uploadData();
+        }, 8000);
+        // 只有当前用户切到其它用户时才会去轮询
+        this.dataTimerGet = setInterval(() => {
+          const sessionId = sessionStorage.getItem('id');
+          this.current && (sessionId !== this.current) && this.getUserData();
+        }, 5000)
+      },
+      getUserData() {
+        axios.get('/data', {
+          params: {
+            id: this.current,
+          }
+        }).then(res => {
+          if (typeof res.data.version === "undefined") {
+            this.chartData = defaultValue;
+          } else {
+            this.chartData = res.data.data;
+          }
+        })
+      },
+      async uploadData(id = '') {
+        // 确保只上传自己的数据
+        let realId = this.current;
+        if (id) realId = id;
+        if (realId === sessionStorage.getItem('id')) {
+          await axios.post('/data', {
+            id: realId,
+            data: [...this.chartData],
+            version: ++this.version
+          });
+        }
+      },
+      initTimeIndicator() {
+        this.timeIndicator = setInterval(() => {
+          const date = new Date();
+          const [h, m, s] = [date.getHours(), date.getMinutes(), date.getSeconds()]
+
+          this.currentTime = `${h}:${m}:${s}`;
+        }, 1000);
       }
+    },
+    watch: {
+      // 用户发生变化时获取或保存数据
+      async current(id, prevId) {
+        if (!id) return;
+        const sessionId = sessionStorage.getItem('id');
+        if (prevId === sessionId) {
+          await this.uploadData(prevId);
+        }
+        await this.getUserData();
+      },
     }
   }
 </script>

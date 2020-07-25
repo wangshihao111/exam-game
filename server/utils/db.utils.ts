@@ -30,14 +30,14 @@ export default class DbUtil {
   }
 
   public async writeJson(db: any) {
-    await fs.writeJson(dbPath, db)
+    await fs.writeJson(dbPath, db, {spaces: 2})
   }
 
   async readJson(): Promise<any> {
     try {
       return (await fs.readJson(dbPath) || {});
     } catch (error) {
-      await fs.writeJson(dbPath, {});
+      await fs.writeJson(dbPath, {}, {spaces: 2});
       return {};
     }
   }
