@@ -6,22 +6,26 @@
         :key="value.name"
         :value="value.value"
         @change="handleChange(value.name, $event)"
+        @click.native="handleClick(value)"
     />
+    <a-modal v-model="visible" title="Basic Modal">
+      <p>Some contents...</p>
+      <p>Some contents...</p>
+      <p>Some contents...</p>
+    </a-modal>
   </div>
 </template>
 
 <script>
+  import { Modal } from 'ant-design-vue'
   import RateInput from "./RateInput";
   export default {
     name: "SkillForm",
     components: {
       RateInput,
+      Modal,
     },
     props: {
-      // fields: {
-      //   type: Array,
-      //   default: () => [],
-      // },
       value: {
         type: Array,
         default: () => [],
@@ -30,6 +34,7 @@
     data() {
       return {
         values: {},
+        visible: false,
       }
     },
     created() {
@@ -47,6 +52,10 @@
         const index = this.value.findIndex(v => v.name === name);
         tmp[index] = {...tmp[index], value: v}
         this.$emit('change', tmp)
+      },
+      handleClick() {
+        console.log(111)
+        this.visible = true
       }
     },
     watch: {
