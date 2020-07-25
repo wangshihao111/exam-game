@@ -48,18 +48,21 @@
   .wrapper {
     margin-top: 16px;
     text-align: center;
+    height: 60px;
     label {
-      margin-right: 4px;
+      margin-right: 8px;
     }
     input {
       height: 32px;
       border: none;
       outline: none;
-      border-bottom: 1px solid #000;
+      border-bottom: 1px solid #ccc;
       border-radius: 0;
       font-size: 16px;
       font-style: italic;
       font-weight: 400;
+      background: none;
+      color: rgba(255,255,255,.8);
 
       text-indent: 12px;
       text-align: center;
