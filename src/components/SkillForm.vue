@@ -1,12 +1,11 @@
 <template>
   <div class="form">
     <RateInput
-        v-for="field in fields"
-        :label="field.label"
-        :key="field.name"
-        :value="values[field.name]"
-        @change="handleChange"
-        v-model="values[field.name]"
+        v-for="value in value"
+        :label="value.label"
+        :key="value.name"
+        :value="value.value"
+        @change="handleChange(value.name, $event)"
     />
   </div>
 </template>
@@ -19,10 +18,10 @@
       RateInput,
     },
     props: {
-      fields: {
-        type: Array,
-        default: () => [],
-      },
+      // fields: {
+      //   type: Array,
+      //   default: () => [],
+      // },
       value: {
         type: Array,
         default: () => [],
@@ -38,25 +37,22 @@
     },
     methods: {
       initFields() {
-        this.fields.forEach(f => {
-          this.$set(this.values, f.name, 10)
+        this.value.forEach(f => {
+          this.$set(this.values, f.name, f.value || 0)
         });
+        this.$forceUpdate();
       },
-      handleChange(v) {
-        console.log(v)
+      handleChange(name, v) {
+        const tmp = [...this.value]
+        const index = this.value.findIndex(v => v.name === name);
+        tmp[index] = {...tmp[index], value: v}
+        this.$emit('change', tmp)
       }
     },
     watch: {
-      fields() {
+      value() {
         this.initFields();
       },
-      values: {
-        deep: true,
-        handler() {
-          console.log('inner')
-          this.$emit('change', {...this.values})
-        }
-      }
     }
   }
 </script>

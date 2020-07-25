@@ -38,9 +38,9 @@
                 </div>
               </div>
               <div class="content-data">
-                <Chart :indicators="fields" :data="chartData"/>
+                <Chart :data="chartData"/>
                 <div class="form-wrapper">
-                  <SkillForm :fields="fields" @change="handleFormChange" />
+                  <SkillForm :value="chartData" @change="handleFormChange" />
                 </div>
               </div>
             </main>
@@ -54,7 +54,6 @@
 <script>
   import imgList from "./utils/imgList";
   import Chart from "./components/Chart";
-  // import RateInput from "./components/RateInput";
   import SkillForm from "./components/SkillForm";
 
   const fields = [
@@ -68,14 +67,14 @@
     {label: '脚手架2', name: 'cli2'},
   ]
 
-  const defaultData = fields.map(f => ({type: f.label, value: 20}))
+  const defaultValue = fields.map(f => ({...f, value: 0}))
+
 
   export default {
     name: 'App',
     components: {
       SkillForm,
       Chart,
-      // RateInput,
     },
     data() {
       return {
@@ -83,7 +82,7 @@
         current: 'dw',
         currentTime: '',
         fields,
-        chartData: defaultData,
+        chartData: defaultValue,
       }
     },
     mounted() {
@@ -100,8 +99,8 @@
         if (item.id === 'title') return;
         this.current = item.id;
       },
-      handleFormChange(value) {
-        console.log(value)
+      handleFormChange(values) {
+        this.chartData = values;
       }
     }
   }
@@ -331,6 +330,7 @@
                   overflow-x: hidden;
                   overflow-y: auto;
                   margin-bottom: 32px;
+                  padding: 8px;
                 }
               }
             }

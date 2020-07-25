@@ -24,6 +24,7 @@
     props: {
       label: String,
       value: Number,
+      disabled: {type: Boolean, default: false}
     },
     data() {
       return {
@@ -37,20 +38,25 @@
         this.canMove = false;
       })
     },
+    created() {
+      this.activeLength = this.value / 100 * 40;
+    },
     methods: {
       handleChange(index) {
         const value = Math.floor(index / 2)*2 / 40 * 100;
         this.$emit('change', value);
       },
       handleItemClick(index) {
-        this.activeLength = index
+        if (!this.disabled) {
+          this.activeLength = index
+        }
       },
-      onMouseDown(e) {
+      onMouseDown() {
         this.canMove = true;
       },
       onMouseMove(e) {
         const key = e.target.dataset.key;
-        if (key && this.canMove) {
+        if (key && this.canMove && !this.disabled) {
           this.activeLength = Number(key)
         } else {
           this.canMove = false;
@@ -62,8 +68,7 @@
         this.handleChange(index)
       },
       value(v) {
-        this.activeLength = v / 100 * (2/40);
-        console.log(this.activeLength)
+        this.activeLength = v / 100 * 40;
       }
     }
   }
@@ -76,17 +81,7 @@
     display: inline-block;
     text-align: left;
     padding: 4px;
-    /*:after {*/
-    /*  display: block;*/
-    /*  content: '';*/
-    /*  height: 0;*/
-    /*  line-height: 0;*/
-    /*  clear: both;*/
-    /*  zoom: 1;*/
-    /*}*/
     .label {
-      /*float: left;*/
-      /*width: 100px;*/
       font-family: PingFangSC-Regular;
       font-size: 14px;
       color: #CFF8FF;
@@ -94,7 +89,6 @@
     }
     .item-wrapper {
       width: 100%;
-      /*width: calc(100% - 100px);*/
       height: 20px;
       display: flex;
       flex-flow: row nowrap;
