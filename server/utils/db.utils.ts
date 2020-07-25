@@ -3,12 +3,7 @@ import path from 'path'
 
 const dbPath = path.resolve(__dirname, '../../db/db.json');
 
-export interface DB {
-  apiList: string[];
-  interceptList: string[];
-}
 
-type dbKeys = 'apiList' | 'interceptList';
 
 export default class DbUtil {
 
@@ -19,31 +14,31 @@ export default class DbUtil {
     }
   }
 
-  public async set (key: dbKeys, value: any): Promise<void> {
+  public async set (key: string, value: any): Promise<void> {
     const db = await this.readJson();
     db[key] = value;
     await this.writeJson(db);
   }
 
-  public async get(key: dbKeys) {
+  public async get(key: string) {
     const db = await this.readJson();
     return db[key];
   }
 
-  public async getDb (): Promise<DB> {
-    return await this.readJson() as DB;
+  public async getDb (): Promise<any> {
+    return await this.readJson() as any;
   }
 
-  public async writeJson(db: DB) {
+  public async writeJson(db: any) {
     await fs.writeJson(dbPath, db)
   }
 
-  async readJson(): Promise<DB> {
+  async readJson(): Promise<any> {
     try {
-      return (await fs.readJson(dbPath) || {}) as DB;
+      return (await fs.readJson(dbPath) || {});
     } catch (error) {
       await fs.writeJson(dbPath, {});
-      return {} as DB;
+      return {};
     }
   }
 

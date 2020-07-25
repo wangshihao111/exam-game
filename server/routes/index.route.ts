@@ -7,10 +7,13 @@ export default class IndexController extends RouteController {
     super(router)
   }
   public init(): void {
-    this.router.get('/', this.index.bind(this));
+    // this.router.get('/', this.index.bind(this));
+    this.router.get('/users', this.getUsers.bind(this))
   }
-  private index(ctx: Context, next: Next) {
-    console.log(this.db)
+  private async index(ctx: Context, next: Next) {
     ctx.body = 'hello, koajs.'
+  }
+  private async getUsers(ctx: Context, next: Next) {
+    ctx.body = await this.db.get('users');
   }
 }
