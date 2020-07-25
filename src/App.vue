@@ -40,7 +40,7 @@
               <div class="content-data">
                 <Chart :data="chartData"/>
                 <div class="form-wrapper">
-                  <SkillForm :value="chartData" @change="handleFormChange" />
+                  <SkillForm :value="chartData" @change="handleFormChange"/>
                 </div>
               </div>
             </main>
@@ -48,6 +48,7 @@
         </div>
       </div>
     </div>
+    <Authorize @confirm="current = $event" />
   </div>
 </template>
 
@@ -55,19 +56,8 @@
   import imgList from "./utils/imgList";
   import Chart from "./components/Chart";
   import SkillForm from "./components/SkillForm";
-
-  const fields = [
-    {label: 'Javascript', name: 'js'},
-    {label: 'React', name: 'React'},
-    {label: 'Vue', name: 'Vue'},
-    {label: 'Nodejs', name: 'Nodejs'},
-    {label: '持续集成', name: 'cxjc'},
-    {label: '脚手架', name: 'cli'},
-    {label: '脚手架1', name: 'cli1'},
-    {label: '脚手架2', name: 'cli2'},
-  ]
-
-  const defaultValue = fields.map(f => ({...f, value: 0}))
+  import {defaultValue} from "./utils/constants";
+  import Authorize from "./components/Authorize";
 
 
   export default {
@@ -75,18 +65,17 @@
     components: {
       SkillForm,
       Chart,
+      Authorize,
     },
     data() {
       return {
         imgList,
         current: 'dw',
         currentTime: '',
-        fields,
         chartData: defaultValue,
       }
     },
     mounted() {
-
       setInterval(() => {
         const date = new Date();
         const [h, m, s] = [date.getHours(), date.getMinutes(), date.getSeconds()]
@@ -317,12 +306,14 @@
                   }
                 }
               }
+
               .content-data {
                 flex: 1;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
                 align-items: center;
+
                 .form-wrapper {
                   width: 260px;
                   flex: 1;

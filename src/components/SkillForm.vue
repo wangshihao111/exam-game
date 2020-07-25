@@ -5,25 +5,30 @@
         :label="value.label"
         :key="value.name"
         :value="value.value"
+        :disabled="value.disabled"
         @change="handleChange(value.name, $event)"
         @click.native="handleClick(value)"
     />
     <a-modal v-model="visible" title="Basic Modal">
-      <p>Some contents...</p>
-      <p>Some contents...</p>
-      <p>Some contents...</p>
+      <RateInput
+          v-for="value in editingSubField"
+          :label="value.label"
+          :key="value.name"
+          :value="value.value"
+          :disabled="value.disabled"
+          @change="handleChange(value.name, $event)"
+          @click.native="handleClick(value)"
+      />
     </a-modal>
   </div>
 </template>
 
 <script>
-  import { Modal } from 'ant-design-vue'
   import RateInput from "./RateInput";
   export default {
     name: "SkillForm",
     components: {
       RateInput,
-      Modal,
     },
     props: {
       value: {
@@ -35,6 +40,7 @@
       return {
         values: {},
         visible: false,
+        editingSubField: [],
       }
     },
     created() {
@@ -53,9 +59,11 @@
         tmp[index] = {...tmp[index], value: v}
         this.$emit('change', tmp)
       },
-      handleClick() {
-        console.log(111)
-        this.visible = true
+      handleClick(field) {
+        if (field.disabled) {
+          this.visible = true;
+          this.editingSubField = field.children;
+        }
       }
     },
     watch: {
