@@ -40,7 +40,7 @@
               <div class="content-data">
                 <Chart :data="chartData"/>
                 <div class="form-wrapper">
-                  <SkillForm :value="chartData" @change="handleFormChange"/>
+                  <SkillForm :disabled="formDisabled" :value="chartData" @change="handleFormChange"/>
                 </div>
               </div>
             </main>
@@ -84,6 +84,11 @@
       clearInterval(this.timeIndicator);
       clearInterval(this.dataTimer);
       clearInterval(this.dataTimerGet);
+    },
+    computed: {
+      formDisabled() {
+        return this.current !== sessionStorage.getItem('id');
+      }
     },
     methods: {
       selectUser(item) {

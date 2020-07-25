@@ -42,7 +42,7 @@ export const defaultValue = [
       {label: '数据库', name: 'database', value: 0},
       {label: '服务端编程', name: 'backendProgram', value: 0},
       {label: '服务器运维-docker容器管理', name: 'docker', value: 0},
-      {label: '服务器运维-服务器管理', name: 'docker', value: 0},
+      {label: '服务器运维-服务器管理', name: 'serverManage', value: 0},
       {label: '服务器运维-持续集成', name: 'ci', value: 0},
       {label: '服务器运维-linux命令', name: 'linux', value: 0},
       {label: '安全', name: 'security', value: 0},

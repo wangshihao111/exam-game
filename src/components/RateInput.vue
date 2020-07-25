@@ -1,8 +1,9 @@
 <template>
-  <div class="rate-input-wrapper">
-    <label class="label">{{label}}</label>
+  <div class="rate-input-wrapper" :class="`rate-input-${labelLayout}`">
+    <label class="label" :style="{width: labelWidth}">{{label}}</label>
     <div
         class="item-wrapper"
+        :style="{width: labelWidth ? `calc(100% - ${labelWidth})` : ''}"
         @mousedown="onMouseDown"
         @mousemove="onMouseMove"
     >
@@ -24,7 +25,9 @@
     props: {
       label: String,
       value: Number,
-      disabled: {type: Boolean, default: false}
+      disabled: {type: Boolean, default: false},
+      labelLayout: String,
+      labelWidth: String,
     },
     data() {
       return {
@@ -43,7 +46,7 @@
     },
     methods: {
       handleChange(index) {
-        const value = Math.floor(index / 2)*2 / 40 * 100;
+        const value = Math.floor(Math.floor(index / 2)*2 / 40 * 100);
         this.$emit('change', value);
       },
       handleItemClick(index) {
@@ -81,6 +84,26 @@
     display: inline-block;
     text-align: left;
     padding: 4px;
+    &.rate-input-horizontal {
+      :after {
+        content: "";
+        height: 0;
+        line-height: 0;
+        display: block;
+        clear: both;
+      }
+      .label, .item-wrapper {
+        float: left;
+        box-sizing: border-box;
+      }
+      .label {
+        padding-right: 8px;
+        text-align: right;
+      }
+      .item-wrapper {
+        width: calc(100% - 120px);
+      }
+    }
     .label {
       font-family: PingFangSC-Regular;
       font-size: 14px;
@@ -93,12 +116,14 @@
       display: flex;
       flex-flow: row nowrap;
       float: left;
+      user-select: none;
     }
     .item {
       display: block;
       height: 100%;
       width: 2.5%;
       cursor: pointer;
+      user-select: none;
       &:nth-of-type(n) {
         background: rgba(255,255,255,0.2);
       }
