@@ -68,6 +68,7 @@
         }
       },
       handleOk() {
+        if (this.disabled) return;
         let total = 0;
         const tmp = [...this.value]
         const index = this.value.findIndex(v => v.name === this.modalId);
