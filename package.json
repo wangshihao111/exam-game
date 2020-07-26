@@ -11,7 +11,6 @@
   "dependencies": {
     "@koa/cors": "^3.1.0",
     "@koa/router": "^9.3.1",
-    "@types/koa-bodyparser": "^4.3.0",
     "ant-design-vue": "^1.6.4",
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
@@ -19,6 +18,8 @@
     "fs-extra": "^9.0.1",
     "koa": "^2.13.0",
     "koa-bodyparser": "^4.3.0",
+    "koa-compress": "^5.0.1",
+    "koa-static": "^5.0.0",
     "vue": "^2.6.11",
     "vuex": "^3.4.0",
     "what-di": "^1.0.1"
@@ -26,7 +27,10 @@
   "devDependencies": {
     "@types/echarts": "^4.6.3",
     "@types/fs-extra": "^9.0.1",
+    "@types/koa-bodyparser": "^4.3.0",
+    "@types/koa-static": "^4.0.1",
     "@types/koa": "^2.11.3",
+    "@types/koa-compress": "^4.0.0",
     "@types/koa__cors": "^3.0.1",
     "@types/koa__router": "^8.0.2",
     "@types/node": "^14.0.25",
