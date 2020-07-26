@@ -20,6 +20,9 @@
     mounted() {
       this.chart = echarts.init(this.$refs.chart);
       this.loadOptions();
+      this.chart.on('click', (e) => {
+        console.log(e)
+      })
     },
     methods: {
       loadOptions() {
@@ -32,7 +35,15 @@
                 {
                   indicator,
                   center: ['50%', '50%'],
-                  radius: 70
+                  radius: 70,
+                  axisLine: {show: false},
+                  splitArea: {
+                    show: true,
+                    areaStyle: {
+                      color: ['rgba(71,211,240,0.30)', 'rgba(71,211,240,0.22)', 'rgba(71,211,240,0.16)', 'rgba(71,211,240,0.08)', 'rgba(71,211,240,0.04)']
+                    },
+                  },
+                  splitLine: { show: false }
                 }
               ],
               series: [
@@ -40,22 +51,22 @@
                   name: '成绩单',
                   type: 'radar',
                   radarIndex: 0,
+                  itemStyle: {
+                  },
+                  lineStyle: {
+                    color: 'rgba(0,0,0,0)'
+                  },
                   data: [
                     {
                       value,
+                      symbolSize: 0,
                       // name: '李四',
                       areaStyle: {
-                        opacity: 0.9,
-                        color: new echarts.graphic.RadialGradient(0.5, 0.5, 1, [
-                          {
-                            color: '#B8D3E4',
-                            offset: 0
-                          },
-                          {
-                            color: '#72ACD1',
-                            offset: 1
-                          }
-                        ])
+                        opacity: 1,
+                        color: '#CFF8FF'
+                      },
+                      itemStyle:{
+                        borderColor: 'none',
                       }
                     }
                   ]
