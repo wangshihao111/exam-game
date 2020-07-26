@@ -43,4 +43,4 @@ jobs:
         host: 47.102.122.82
         username: root
         password: ${{ secrets.SSH_PASSWORD }}
-        script: docker pull registry.cn-shanghai.aliyuncs.com/sdev/exam-game  && docker rm -f exam-game && docker run --name exam-game -d -p 5200:3030 registry.cn-shanghai.aliyuncs.com/sdev/exam-game 
+        script: docker pull registry.cn-shanghai.aliyuncs.com/sdev/exam-game  && docker rm -f exam-game && docker run --name exam-game -d -p 5200:3030 -v /var/exam-game-db:/var/exam-game/db registry.cn-shanghai.aliyuncs.com/sdev/exam-game
