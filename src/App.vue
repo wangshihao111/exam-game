@@ -1,6 +1,10 @@
 <template>
   <div id="app">
     <div class="app-header"/>
+    <div class="music-control">
+      <audio autoplay loop ref="music" :src="musicSrc"></audio>
+      <img @click="handleSwitchPlay" :src="musicIcon" alt="">
+    </div>
     <div class="content-wrapper">
       <div class="content-inner-wrapper">
         <div class="content">
@@ -74,6 +78,8 @@
         currentTime: '',
         chartData: defaultValue,
         version: -1,
+        playing: true,
+        musicSrc: process.env.NODE_ENV === 'development' ? 'http://localhost:3030/bgmusic.mp3' : '/bgmusic.mp3',
       }
     },
     mounted() {
@@ -88,9 +94,16 @@
     computed: {
       formDisabled() {
         return this.current !== sessionStorage.getItem('id');
+      },
+      musicIcon() {
+        return this.playing ? require('./assets/pause.png') : require('./assets/play.png');
       }
     },
     methods: {
+      handleSwitchPlay() {
+        this.playing ? this.$refs.music.pause() : this.$refs.music.play();
+        this.playing = !this.playing;
+      },
       selectUser(item) {
         if (item.id === 'title') return;
         this.current = item.id;
@@ -176,7 +189,28 @@
       height: 73px;
       background-size: cover;
     }
-
+    .music-control {
+      position: absolute;
+      top: 60px;
+      right: 32px;
+      width: 40px;
+      height: 40px;
+      overflow: hidden;
+      border-radius: 50%;
+      transition: all .2s;
+      &:hover {
+        background-color: rgba(255,255,255,.2);
+      }
+      > audio {
+        display: none;
+      }
+      > img {
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        margin: 4px;
+      }
+    }
     .content-wrapper {
       position: absolute;
       top: 123px;
