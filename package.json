@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build && tsc",
     "server": "nodemon --exec ts-node server/index.ts",
     "lint": "vue-cli-service lint"
   },
