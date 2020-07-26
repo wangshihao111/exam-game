@@ -2,7 +2,7 @@
   <div id="app">
     <div class="app-header"/>
     <div class="music-control">
-      <audio autoplay loop ref="music" :src="musicSrc"></audio>
+      <audio autoplay loop ref="music" src="https://gitee.com/wangshihao111/blog-assets/raw/master/music/exam-bg.mp3"></audio>
       <img @click="handleSwitchPlay" :src="musicIcon" alt="">
     </div>
     <div class="content-wrapper">
@@ -79,7 +79,7 @@
         chartData: defaultValue,
         version: -1,
         playing: true,
-        musicSrc: process.env.NODE_ENV === 'development' ? 'http://localhost:3030/bgmusic.mp3' : '/bgmusic.mp3',
+        // musicSrc: process.env.NODE_ENV === 'development' ? 'http://localhost:3030/bgmusic.mp3' : '/bgmusic.mp3',
       }
     },
     mounted() {
