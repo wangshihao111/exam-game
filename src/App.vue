@@ -114,7 +114,7 @@
       setUpDataTimer() {
         this.dataTimer = setInterval(() => {
           this.current && this.uploadData();
-        }, 8000);
+        }, 5000);
         // 只有当前用户切到其它用户时才会去轮询
         this.dataTimerGet = setInterval(() => {
           const sessionId = sessionStorage.getItem('id');
