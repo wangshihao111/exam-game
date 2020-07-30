@@ -3,34 +3,48 @@ import path from 'path'
 
 const dbPath = path.resolve(__dirname, '../../db/db.json');
 
-
-
 export default class DbUtil {
+  private db: any;
 
   constructor () {
     const base = path.resolve(__dirname, '../../db')
     if (!fs.existsSync(base)) {
       fs.mkdirSync(base)
     }
+    this.db = {};
+    this.loadDb();
+    setInterval(async () => {
+      await this.write();
+    }, 3000);
   }
 
-  public async set (key: string, value: any): Promise<void> {
-    const db = await this.readJson();
-    db[key] = value;
-    await this.writeJson(db);
+  public set (key: string, value: any): void {
+    this.db[key] = value;
   }
 
-  public async get(key: string) {
-    const db = await this.readJson();
-    return db[key];
+  public get(key: string) {
+    return this.db[key];
   }
 
-  public async getDb (): Promise<any> {
-    return await this.readJson() as any;
+  public getDb () {
+    return this.db;
   }
 
   public async writeJson(db: any) {
     await fs.writeJson(dbPath, db, {spaces: 2})
+  }
+
+  private async write() {
+    await fs.writeJson(dbPath, this.db, {spaces: 2})
+  }
+
+  private loadDb() {
+    try {
+      this.db = fs.readJSONSync(dbPath);
+    } catch (e) {
+      fs.writeJsonSync(dbPath, {});
+      this.db = {};
+    }
   }
 
   async readJson(): Promise<any> {

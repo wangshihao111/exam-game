@@ -19,20 +19,20 @@ export default class IndexController extends RouteController {
   }
 
   private async getUsers(ctx: Context, next: Next) {
-    ctx.body = await this.db.get('users');
+    ctx.body = this.db.get('users');
   }
 
   private async getData(ctx: Context, next: Next) {
     const id = ctx.request.query.id;
-    ctx.body = (await this.db.get('users') || {})[id] || {};
+    ctx.body = (this.db.get('users') || {})[id] || {};
   }
 
   private async setData(ctx: Context, next: Next) {
-    const current = await this.db.get('users') || {};
+    const current = this.db.get('users') || {};
     const body = ctx.request.body;
     const {id, data, version} = body;
     current[id] = {data, version};
-    await this.db.set('users', current)
+    this.db.set('users', current)
     ctx.body = {
       code: 0,
       msg: '更新成功。'
